@@ -43,7 +43,7 @@ Here is a order that a user(0xA307D607Ad04622fAF7F3A173314509dC69CAb67) wants to
 }
 ```
 
-Each order contains a user target pricing and tokens addresses. market makers should check these pricing for themselves, in order to make sure they could profit from a order.
+Each order contains a user target pricing and token addresses. market makers should check these pricing for themselves, in order to make sure they could profit from a order.
 
 ## Get Coordinator's Signature
 
@@ -62,6 +62,13 @@ export const createTrade = async (relayerAddress: string, limitOrder: LimitOrder
   try {
     const resp = await axios.post(createTradeAPI, createTradeRequest)
     const result = resp.data
+    /*
+    {
+      sig: '0xadcaab370e1e2eaba02e491c834bc730d807ded0b8fc4c8a327febdc96d5c2783716bcced54be0125880008c0962dd7ad9cbb36f76124874479a892849beedd81b000000000000000000000000000000000000000000000000000000000000000002',
+      expiry: 1672285977,
+      salt: '53877022432961262906682897356647888273613148815032923035962179578712288650041'
+    }
+    */
     return result
   } catch (e) {
     console.error(e)
