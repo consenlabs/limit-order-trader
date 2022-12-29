@@ -6,7 +6,7 @@ There are three steps for a market maker to integrate Tokenlon limit order.
 * Find a fillable order and get coordinator's signature
 * Send a transaction to a specific blockchain
 
-We only provide a testnet environment (Goerli) for market maker integration.
+We only provide a testnet environment (Goerli) for now.
 
 ## Fetch User Orders
 
