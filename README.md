@@ -16,6 +16,33 @@ You could acess user orders via the GET API below.
 curl -X GET 'https://api.imdev.works/v5/limit-order/limitorder?chainId=5&status=pending,partialfilled'
 ```
 
+Here is a order that a user(0xA307D607Ad04622fAF7F3A173314509dC69CAb67) wants to sell 12000000 0xa93Ef9215b907c19e739E2214e1AA5412a0401B5 tokens(6 decimals) for 10000000000000000 0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6 tokens(18 decimals) and the remain quota of the order's taker token is 10000000000000000. So the pricing is `12 0xa93Ef9215b907c19e739E2214e1AA5412a0401B5 -> 0.01 0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6`
+
+```json
+{
+  "cancelledAt": "",
+  "chainId": 5,
+  "createdAt": "2022-12-29T03:50:57Z",
+  "expiry": 1672372254,
+  "id": 651,
+  "maker": "0xA307D607Ad04622fAF7F3A173314509dC69CAb67",
+  "makerSig": "0xce2d30b61b07a93162eeff015b6c8650874c8ac9fd083d96a02bd8f40ac392d816b43b71389ee2ee9a2cf0e809ee037074ded2fd493821fec84129caeef9e93b1c000000000000000000000000000000000000000000000000000000000000000002",
+  "makerToken": "0xa93Ef9215b907c19e739E2214e1AA5412a0401B5",
+  "makerTokenAmount": "12000000",
+  "orderHash": "0x33474ad18cab17fd511db7261d12d48adfd324407103f2fd2bf4315c98a71e49",
+  "remainQuota": "10000000000000000", // taker token units
+  "salt": "81288522724654308173109929826343836162437203565474825798641954992826188088358",
+  "status": "pending",
+  "taker": "0x0000000000000000000000000000000000000000",
+  "takerToken": "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6",
+  "takerTokenAmount": "10000000000000000",
+  "trades": [
+    ...
+  ],
+  "updatedAt": "2022-12-29T04:08:37Z"
+}
+```
+
 Each order contains a user target pricing and tokens addresses. market makers should check these pricing for themselves, in order to make sure they could profit from a order.
 
 ## Get Coordinator's Signature
