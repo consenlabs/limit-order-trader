@@ -11,6 +11,7 @@ const providerUrl = process.env.JSON_RPC_PROVIDER
 const makerPrivateKey = process.env.TEST_MAKER_PRIVATE_KEY
 const provider = new ethers.providers.JsonRpcProvider(providerUrl)
 const maker = new ethers.Wallet(makerPrivateKey)
+console.log(maker)
 const limitOrderContractAddress = `0xe2E5e33aEc661241b3853a4460F7AabA65e950c3`
 const usdtAddress = `0xa93Ef9215b907c19e739E2214e1AA5412a0401B5`
 const wethAddress = `0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6`
@@ -113,27 +114,7 @@ export const makerSign = async (maker: Wallet, limitOrderRequest): Promise<any> 
   return limitOrder
 }
 
-const cancelAndPlaceNewOrder = async () => {
-  const resp = await axios.get(limitOrderListAPI)
-  const orders = resp.data
-  console.log(orders)
-  if (orders.length > 0) {
-    // cancel all orders
-    const orderHashes = orders.map(order => {
-      return order.orderHash
-    })
-    const message = orderHashes.join(",")
-    const cancelSig = await maker.signMessage(message)
-    const resp = await axios.put(newOrderAPI, {
-      chainId: chainId,
-      orderHashes: orderHashes,
-      cancelSig: cancelSig
-    })
-    const result = resp.data
-    console.log(result)
-    console.log(`cancelled all orders`)
-  }
-
+const placeNewOrder = async () => {
   // new order
   const priceResp = await axios.get(binancePriceAPI)
   const prices = priceResp.data
@@ -157,6 +138,34 @@ const cancelAndPlaceNewOrder = async () => {
   const newLimitOrder = newOrderResult.data
   console.log(newLimitOrder)
   console.log(`new order: ${newLimitOrder.orderHash}`)
+}
+
+const cancelAndPlaceNewOrder = async () => {
+  const resp = await axios.get(limitOrderListAPI)
+  const orders = resp.data
+  console.log(orders)
+  const remainOrders = orders.filter(order => {
+    return new BN(order.remainQuota).isGreaterThan(0)
+  })
+  if (remainOrders.length > 0) {
+    // cancel all orders
+    const orderHashes = remainOrders.map(order => {
+      return order.orderHash
+    })
+    const message = orderHashes.join(",")
+    const cancelSig = await maker.signMessage(message)
+    const resp = await axios.put(newOrderAPI, {
+      chainId: chainId,
+      orderHashes: orderHashes,
+      cancelSig: cancelSig
+    })
+    const result = resp.data
+    console.log(result)
+    console.log(`cancelled all orders`)
+    await placeNewOrder()
+  } else {
+    await placeNewOrder()
+  }
 }
 
 const main = async () => {
