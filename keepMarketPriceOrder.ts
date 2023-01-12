@@ -185,7 +185,7 @@ const main = async () => {
       }
       inProgress = false
     }
-  }, 15000)
+  }, 60000)
 }
 
 main()
