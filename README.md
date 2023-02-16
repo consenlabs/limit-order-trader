@@ -47,7 +47,7 @@ Each order contains a user target pricing and token addresses. market makers sho
 
 ## Get Coordinator's Signature
 
-Once a market maker found a profitable order, it need to create a trade request to monopolize the order. There's example code [in the script](https://github.com/consenlabs/limit-order-trader/blob/master/test/fillLimitOrderByTrader.ts#L270).
+Once a market maker found a profitable order, it needs to create a trade request to monopolize the order. There's example code [in the script](https://github.com/consenlabs/limit-order-trader/blob/master/test/fillLimitOrderByTrader.ts#L270).
 
 ```typescript
 export const createTrade = async (relayerAddress: string, limitOrder: LimitOrder, traderParams: TraderParams) => {
